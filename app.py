@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from transformers import AutoImageProcessor, AutoModelForImageClassification
 from PIL import Image
 import torch
+import os
 
 app1 = Flask(__name__)
 
@@ -60,4 +61,5 @@ def predict():
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app1.run(debug=True, port=5000)  # Running on port 5000
+    port = int(os.environ.get('PORT', 5000))
+    app1.run(debug=True, host='0.0.0.0', port=port)
