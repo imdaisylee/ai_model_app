@@ -13,8 +13,8 @@ models = {
         "model": AutoModelForImageClassification.from_pretrained("emobobas/celebrity_deepfake_detection")
     },
     "model2": {
-        "processor": AutoImageProcessor.from_pretrained("umm-maybe/AI-image-detector"),
-        "model": AutoModelForImageClassification.from_pretrained("umm-maybe/AI-image-detector")
+        "processor": AutoImageProcessor.from_pretrained("imdaisylee/test_model"),
+        "model": AutoModelForImageClassification.from_pretrained("imdaisylee/test_model")
     }
 }
 
