@@ -6,16 +6,9 @@ import os
 
 app1 = Flask(__name__)
 
-# Load models directly
 models = {
-    "model1": {
-        "processor": AutoImageProcessor.from_pretrained("emobobas/celebrity_deepfake_detection"),
-        "model": AutoModelForImageClassification.from_pretrained("emobobas/celebrity_deepfake_detection")
-    },
-    "model2": {
-        "processor": AutoImageProcessor.from_pretrained("imdaisylee/test_model"),
-        "model": AutoModelForImageClassification.from_pretrained("imdaisylee/test_model")
-    }
+    "model1": "emobobas/celebrity_deepfake_detection",
+    "model2": "imdaisylee/test_model"
 }
 
 @app1.route('/')
@@ -37,13 +30,17 @@ def predict():
         return jsonify({'error': 'Invalid model selected'})
 
     try:
+        # Load the model
+        processor = AutoImageProcessor.from_pretrained(models[model_key])
+        model = AutoModelForImageClassification.from_pretrained(models[model_key])
+
         # Open the image file
         image = Image.open(file).convert('RGB')
         
         # Preprocess the image
         processor = models[model_key]["processor"]
         model = models[model_key]["model"]
-        inputs = processor(images=image, return_tensors="pt")
+        inputs = processor(images=image, return_tensors="pt")   
         
         # Perform inference
         with torch.no_grad():
@@ -56,6 +53,8 @@ def predict():
         
         # Return the prediction and confidence
         return jsonify({'predicted_class': predicted_class, 'confidence': confidence_score})
+    
+    
     
     except Exception as e:
         return jsonify({'error': str(e)})
