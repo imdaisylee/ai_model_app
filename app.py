@@ -2,19 +2,20 @@ from flask import Flask, request, jsonify
 from transformers import AutoImageProcessor, AutoModelForImageClassification
 from PIL import Image
 import torch
+import os
 
-app1 = Flask(__name__)
+app = Flask(__name__)
 
 models = {
     "model1": "emobobas/celebrity_deepfake_detection",
     "model2": "imdaisylee/test_model"
 }
 
-@app1.route('/')
+@app.route('/')
 def home():
     return jsonify({"message": "Deepfake vs Real Image Detection API"})
 
-@app1.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST'])
 def predict():
     if 'file' not in request.files or 'model' not in request.form:
         return jsonify({'error': 'No file or model part'})
@@ -55,4 +56,6 @@ def predict():
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app1.run(host='0.0.0.0')
+    port = int(os.environ.get('PORT', 5500))
+    app.run(host='0.0.0.0', port=port)
+    print(f"Flask app is running on http://0.0.0.0:{port}")
