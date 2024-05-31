@@ -2,7 +2,6 @@ from flask import Flask, request, jsonify
 from transformers import AutoImageProcessor, AutoModelForImageClassification
 from PIL import Image
 import torch
-import os
 
 app1 = Flask(__name__)
 
