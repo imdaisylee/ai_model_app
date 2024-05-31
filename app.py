@@ -13,7 +13,7 @@ models = {
 
 @app1.route('/')
 def home():
-    return "Deepfake vs Real Image Detection API"
+    return jsonify({"message": "Deepfake vs Real Image Detection API"})
 
 @app1.route('/predict', methods=['POST'])
 def predict():
@@ -38,8 +38,6 @@ def predict():
         image = Image.open(file).convert('RGB')
         
         # Preprocess the image
-        processor = models[model_key]["processor"]
-        model = models[model_key]["model"]
         inputs = processor(images=image, return_tensors="pt")   
         
         # Perform inference
@@ -53,17 +51,11 @@ def predict():
         
         # Return the prediction and confidence
         return jsonify({'predicted_class': predicted_class, 'confidence': confidence_score})
-    
-    
-    
+
     except Exception as e:
         return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5500))
-    
-    try:
-        app1.run(host='0.0.0.0', port=port)
-        print(f"Flask app is running on http://0.0.0.0:{port}")
-    except Exception as e:
-        print(f"Error starting Flask app: {e}")
+    app1.run(host='0.0.0.0', port=port)
+    print(f"Flask app is running on http://0.0.0.0:{port}")
