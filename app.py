@@ -61,4 +61,9 @@ def predict():
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5500))
-    app1.run(debug=True, host='0.0.0.0', port=port)
+    
+    try:
+        app1.run(host='0.0.0.0', port=port)
+        print(f"Flask app is running on http://0.0.0.0:{port}")
+    except Exception as e:
+        print(f"Error starting Flask app: {e}")
